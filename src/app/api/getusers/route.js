@@ -1,7 +1,7 @@
 
 import {dbConnect} from '@lib/mongodb/db'
 import {NextResponse} from 'next/server'
-import User from '@/models/user'
+import User from '@models/user'
 
 
 export async function GET() {
@@ -9,6 +9,6 @@ export async function GET() {
 
     const firstUser = await User.find();
     console.log(firstUser)
-    return NextResponse.json(firstUser);
+    return new NextResponse(firstUser);
     //return NextResponse.json({message: 'Hello World'})
 }

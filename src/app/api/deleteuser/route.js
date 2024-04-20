@@ -1,10 +1,10 @@
 
 import {dbConnect} from '@lib/mongodb/db'
 import {NextResponse} from 'next/server'
-import User from '@/models/user'
+import User from '@models/user'
 
 
-export async function DELETE(req) {
+export async function DELETE(req) { //req data from body
     const deleteUser = await req.json();
     const con = await dbConnect();
 

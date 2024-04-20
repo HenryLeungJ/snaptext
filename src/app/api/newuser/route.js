@@ -1,10 +1,10 @@
 
 import {dbConnect} from '@lib/mongodb/db'
 import {NextResponse} from 'next/server'
-import User from '@/models/user'
+import User from '@models/user'
 
 
-export async function POST(req) {
+export async function POST(req) { //req data from body
     const userRequest = await req.json();
     const con = await dbConnect();
     const newUser = new User({
