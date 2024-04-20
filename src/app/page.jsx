@@ -3,12 +3,14 @@
 import { useEffect, useState } from "react";
 import { socket } from "../socket";
 import NewUser from '@/components/newUser'
+import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator'
 
 const users = [{id: 'henry'}, {id: 'hff'}, {id: 'hs'}, {id: 'pen'}, {id: 'leung'},]; //static test data
 
 export default function Home() {
   const [isConnected, setIsConnected] = useState(false);
   const [transport, setTransport] = useState("N/A");
+  const [allUsers, setAllUsers] = useState([])
 
   //message
   const [message, setMessage] = useState([]);
@@ -25,10 +27,19 @@ export default function Home() {
     //   setMessage(value);
     // });
 
+    async function fetchUsers() {
+      const randomName = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] }); // big_red_donkey
+      console.log(randomName)
+      await fetch("http://localhost:3000/api/getusers")
+      .then((response) => response.json())
+      .then((data) => {setAllUsers(data)})
+    }
+
     function onConnect() {
       setIsConnected(true);
       setTransport(socket.io.engine.transport.name);
       setMessage([`You connected with ${socket.id}`])
+      fetchUsers();
 
       socket.io.engine.on("upgrade", (transport) => {
         setTransport(transport.name);
@@ -62,7 +73,7 @@ export default function Home() {
   return (
     <div className="w-screen h-80 my-10 flex justify-center">
       <div className="w-[80%] grid grid-cols-4 gap-4">
-        {users.map((val) => {
+        {allUsers.map((val) => {
           return <NewUser id={val.id}/>
         })}
       </div>

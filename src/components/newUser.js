@@ -20,7 +20,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 export default function newUser(params) {
-    console.log(params)
     return(
         <Dialog>
             <DialogTrigger asChild>

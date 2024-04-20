@@ -9,6 +9,6 @@ export async function GET() {
 
     const firstUser = await User.find();
     console.log(firstUser)
-    return new NextResponse(firstUser);
+    return NextResponse.json(firstUser);
     //return NextResponse.json({message: 'Hello World'})
 }
