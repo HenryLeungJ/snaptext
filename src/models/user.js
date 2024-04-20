@@ -2,7 +2,14 @@
 import mongoose, { Schema, model } from 'mongoose'
 
 const userSchema = new Schema({
-    id: {type: String, required: true, unique: true},
+    _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        index: true,
+        required: true,
+        auto: true,
+      },
+    userid: {type: String, required: true, unique: true},
+    username: {type: String, required: true, unique: true}
 });
 
 export default mongoose.models.User || model('User', userSchema);

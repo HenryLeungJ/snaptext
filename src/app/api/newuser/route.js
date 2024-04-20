@@ -6,19 +6,21 @@ import User from '@/models/user'
 
 export async function POST(req) { //req data from body
     const userRequest = await req.json();
+    console.log(userRequest.name)
     const con = await dbConnect();
     const newUser = new User({
-        id: userRequest.id,
+        userid: userRequest.id,
+        username: userRequest.name,
     })
+    console.log(newUser);
     try {
         await newUser.save();
     } catch (error) {
-        console.log("New user load failed failed")
+        console.log("New user load failed", error)
     }
     
 
     const allUsers = await User.find();
-    console.log(allUsers)
     return NextResponse.json(allUsers);
     //return NextResponse.json({message: 'Hello World'})
 }

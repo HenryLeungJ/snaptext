@@ -8,7 +8,7 @@ export async function GET() {
     const con = await dbConnect();
 
     const firstUser = await User.find();
-    console.log(firstUser)
+    // console.log(firstUser)
     return NextResponse.json(firstUser);
     //return NextResponse.json({message: 'Hello World'})
 }

@@ -28,11 +28,23 @@ export default function Home() {
     // });
 
     async function fetchUsers() {
-      const randomName = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] }); // big_red_donkey
-      console.log(randomName)
       await fetch("http://localhost:3000/api/getusers")
       .then((response) => response.json())
       .then((data) => {setAllUsers(data)})
+    }
+
+    async function addUser() {
+      const randomName = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] }); // big_red_donkey
+      console.log(randomName)
+      await fetch("http://localhost:3000/api/newuser", {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({id: socket.id, name: randomName})
+      })
+      .then((response) => response.json())
+      .then((data) => {console.log(data)})
     }
 
     function onConnect() {
@@ -40,6 +52,7 @@ export default function Home() {
       setTransport(socket.io.engine.transport.name);
       setMessage([`You connected with ${socket.id}`])
       fetchUsers();
+      addUser();
 
       socket.io.engine.on("upgrade", (transport) => {
         setTransport(transport.name);
@@ -74,7 +87,7 @@ export default function Home() {
     <div className="w-screen h-80 my-10 flex justify-center">
       <div className="w-[80%] grid grid-cols-4 gap-4">
         {allUsers.map((val) => {
-          return <NewUser id={val.id}/>
+          return <NewUser id={val.id} name={val.username}/>
         })}
       </div>
     </div>
