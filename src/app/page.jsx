@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { socket } from "../socket";
-import NewUser from '@components/newUser'
+import NewUser from '@/components/newUser'
 
+const users = [{id: 'henry'}, {id: 'hff'}, {id: 'hs'}, {id: 'pen'}, {id: 'leung'},]; //static test data
 
 export default function Home() {
   const [isConnected, setIsConnected] = useState(false);
@@ -59,7 +60,18 @@ export default function Home() {
   }
 
   return (
-    <div className="w-screen h-screen">
+    <div className="w-screen h-80 my-10 flex justify-center">
+      <div className="w-[80%] grid grid-cols-4 gap-4">
+        {users.map((val) => {
+          return <NewUser id={val.id}/>
+        })}
+      </div>
+    </div>
+  );
+}
+
+
+{/* <div className="w-screen h-screen">
       <p>Status: { isConnected ? "connected" : "disconnected" }</p>
       <p>Transport: { transport }</p>
       <div className="w-full h-80 flex flex-col items-center">
@@ -83,6 +95,4 @@ export default function Home() {
         <input type="submit" placeholder="submit"></input>
       </form>
       <NewUser/>
-    </div>
-  );
-}
+    </div> */}

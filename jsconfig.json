@@ -3,9 +3,6 @@
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"],
-      "@lib/*": ["./lib/*"],
-      "@components/*": ["./components/*"],
-      "@models/*": ["./models/*"],
     }
   }
 }
