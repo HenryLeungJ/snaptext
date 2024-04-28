@@ -60,7 +60,7 @@ export default function Home() {
       socket.on("disconnect", onDisconnect);
       socket.emit("on");
       socket.on("adduser", async () => {
-        addUser();
+        addUser().then(fetchUsers());
       })
       socket.on("fetchusers", () => {
         fetchUsers();
@@ -103,6 +103,9 @@ export default function Home() {
     <div className="w-screen h-80 my-10 flex justify-center">
       <div className="w-[80%] grid grid-cols-4 gap-4">
         {allUsers.map((val) => {
+          if (socket.id == val.userid) {
+            return <NewUser id={val.userid} name={val.username} img={val.icon} highlight={true}/>
+          }
           return <NewUser id={val.userid} name={val.username} img={val.icon}/>
         })}
       </div>

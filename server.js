@@ -36,7 +36,7 @@ app.prepare().then(() => {
     await socket.on('disconnect', () => {
       console.log("disconencted")
       deleteUser(socket);
-      socket.broadcast.emit("fetchusers")
+      socket.emit("fetchusers")
     })
     await socket.on("on", async () => {
       await socket.emit("adduser");

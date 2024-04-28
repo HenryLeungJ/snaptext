@@ -1,4 +1,4 @@
-"use client"
+
 import { Copy } from "lucide-react"
 import {
     Avatar,
@@ -20,7 +20,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-import { useState } from 'react';
 
 export default function newUser(params) {
     return(
@@ -34,9 +33,9 @@ export default function newUser(params) {
                                     <AvatarFallback>CN</AvatarFallback>
                                 </Avatar>
                             </div>
-                            <p className="drop-shadow-md font-sans">{params.name}</p>
+                            {params.highlight ? <p className="drop-shadow-md font-sans font-extrabold">{params.name}</p> : <p className="drop-shadow-md font-sans">{params.name}</p>}
                         </div>
-                        </DialogTrigger>
+            </DialogTrigger>
         </div>
             
             <DialogContent className="sm:max-w-md">
