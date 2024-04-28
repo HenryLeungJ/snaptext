@@ -35,15 +35,18 @@ app.prepare().then(() => {
     console.log(socket.id);
     socket.on('disconnect', () => {
       console.log("disconencted")
-      deleteUser(socket).then(io.emit("fetchusers"));
-      
+      deleteUser(socket);
+      setTimeout(() => {
+        io.emit("fetchusers")
+      }, 1000)
     })
     socket.on("on", () => {
       socket.emit("adduser");
-    })
-    socket.on("fetchall", () => {
       io.emit("fetchusers")
     })
+    // socket.on("fetchall", () => {
+    //   io.emit("fetchusers")
+    // })
     socket.on("submitted", (message, room) => {
         if(room ==='') {
             socket.broadcast.emit('recieved', message);

@@ -28,11 +28,31 @@ export default function Home() {
     //   setMessage(value);
     // });
 
+    async function deleteUser() {
+      await fetch("http://localhost:3000/api/deleteuser", {
+        method: 'DELETE',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({id: socket.id})
+      }).then(response => response.json()).then((data) => {console.log(("deleted: " + data.userid) || data.error)})
+    } 
+
     async function fetchUsers() {
       await fetch("http://localhost:3000/api/getusers")
       .then((response) => response.json())
       .then((data) => {setAllUsers(data); console.log(data)})
     }
+
+    async function deleteUser() {
+      await fetch("http://localhost:3000/api/deleteuser", {
+        method: 'DELETE',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({id: socket.id})
+      }).then(response => response.json()).then((data) => {console.log(("deleted: " + data.userid) || data.error)})
+    } 
 
     // add user
     async function addUser() {
@@ -59,6 +79,15 @@ export default function Home() {
       setMessage([`You connected with ${socket.id}`])
       // await fetchUsers();
 
+      socket.emit("on");
+      socket.on("adduser", () => {
+          addUser();
+          // socket.emit("fetchall")
+      })
+      socket.on("fetchusers", () => {
+          fetchUsers();
+      })
+
       socket.io.engine.on("upgrade", (transport) => {
         setTransport(transport.name);
       });
@@ -69,14 +98,6 @@ export default function Home() {
     })
 
     socket.on("disconnect", onDisconnect);
-    socket.emit("on");
-    socket.on("adduser", () => {
-        addUser();
-        socket.emit("fetchall")
-    })
-    socket.on("fetchusers", () => {
-        fetchUsers();
-    })
 
     function onDisconnect() {
       setIsConnected(false);
