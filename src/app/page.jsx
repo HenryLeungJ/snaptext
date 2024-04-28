@@ -33,6 +33,7 @@ export default function Home() {
       .then((data) => {setAllUsers(data)})
     }
 
+    // add user
     async function addUser() {
       const randomName = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] }); // big_red_donkey
       console.log(randomName)
@@ -43,16 +44,26 @@ export default function Home() {
         },
         body: JSON.stringify({id: socket.id, name: randomName})
       })
-      .then((response) => response.json())
-      .then((data) => {console.log(data)})
     }
 
-    function onConnect() {
+    // socket.on("adduser", async () => {
+    //   await addUser();
+    //   await fetchUsers();
+    // })
+    // socket.emit("on");
+    async function onConnect() {
       setIsConnected(true);
       setTransport(socket.io.engine.transport.name);
       setMessage([`You connected with ${socket.id}`])
-      fetchUsers();
-      addUser();
+      await socket.on("disconnect", onDisconnect);
+      socket.emit("on");
+      await socket.on("adduser", async () => {
+        addUser().then(fetchUsers());
+      })
+      await socket.on("fetchusers", () => {
+        fetchUsers();
+      })
+      // await fetchUsers();
 
       socket.io.engine.on("upgrade", (transport) => {
         setTransport(transport.name);
@@ -66,14 +77,16 @@ export default function Home() {
     function onDisconnect() {
       setIsConnected(false);
       setTransport("N/A");
+      console.log('disconnected');
     }
     socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
+
 
     return () => {
-      socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
+      socket.off("connect", onConnect);
       socket.off("recieved");
+      socket.off("adduser")
     };
   }, []);
   
@@ -87,7 +100,7 @@ export default function Home() {
     <div className="w-screen h-80 my-10 flex justify-center">
       <div className="w-[80%] grid grid-cols-4 gap-4">
         {allUsers.map((val) => {
-          return <NewUser id={val.id} name={val.username}/>
+          return <NewUser id={val.id} name={val.username} img="https://picsum.photos/200"/>
         })}
       </div>
     </div>

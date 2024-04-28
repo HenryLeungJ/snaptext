@@ -12,15 +12,17 @@ export async function POST(req) { //req data from body
         userid: userRequest.id,
         username: userRequest.name,
     })
-    console.log(newUser);
+    // console.log(newUser);
     try {
         await newUser.save();
+        console.log("added: " + userRequest.name + " with id " + userRequest.id)
+        return NextResponse.json({id: userRequest.id, username: userRequest.name});
     } catch (error) {
         console.log("New user load failed", error)
+        return NextResponse.json(error);
     }
     
 
-    const allUsers = await User.find();
-    return NextResponse.json(allUsers);
+    // const allUsers = await User.find();
     //return NextResponse.json({message: 'Hello World'})
 }

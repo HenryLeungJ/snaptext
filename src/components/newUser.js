@@ -25,17 +25,20 @@ import { useState } from 'react';
 export default function newUser(params) {
     return(
         <Dialog>
+        <div className="max-h-2 my-10">
             <DialogTrigger asChild>
-            <div className="flex flex-col justify-center items-center">
-                <div className="jump mb-3 drop-shadow-md">
-                    <Avatar>
-                        <AvatarImage src="https://github.com/shadcn.png" />
-                        <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                </div>
-                <p className="drop-shadow-md font-sans">{params.name}</p>
-            </div>
-            </DialogTrigger>
+                        <div className="flex flex-col justify-center items-center">
+                            <div className="jump mb-3 drop-shadow-md">
+                                <Avatar>
+                                    <AvatarImage src={params.img} />
+                                    <AvatarFallback>CN</AvatarFallback>
+                                </Avatar>
+                            </div>
+                            <p className="drop-shadow-md font-sans">{params.name}</p>
+                        </div>
+                        </DialogTrigger>
+        </div>
+            
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                 <DialogTitle>Share link</DialogTitle>
