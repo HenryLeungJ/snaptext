@@ -35,10 +35,12 @@ app.prepare().then(() => {
     console.log(socket.id);
     await socket.on('disconnect', () => {
       console.log("disconencted")
-      deleteUser(socket).then(socket.broadcast.emit("fetchusers"));
+      deleteUser(socket);
+      socket.broadcast.emit("fetchusers")
     })
-    await socket.on("on", () => {
-      socket.emit("adduser").then(socket.broadcast.emit("fetchusers"));
+    await socket.on("on", async () => {
+      await socket.emit("adduser");
+      socket.emit("fetchusers")
     })
     socket.on("submitted", (message, room) => {
         if(room ==='') {

@@ -57,12 +57,12 @@ export default function Home() {
       setIsConnected(true);
       setTransport(socket.io.engine.transport.name);
       setMessage([`You connected with ${socket.id}`])
-      await socket.on("disconnect", onDisconnect);
+      socket.on("disconnect", onDisconnect);
       socket.emit("on");
-      await socket.on("adduser", async () => {
-        addUser().then(fetchUsers());
+      socket.on("adduser", async () => {
+        addUser();
       })
-      await socket.on("fetchusers", () => {
+      socket.on("fetchusers", () => {
         fetchUsers();
       })
       // await fetchUsers();
@@ -88,7 +88,8 @@ export default function Home() {
       socket.off("disconnect", onDisconnect);
       socket.off("connect", onConnect);
       socket.off("recieved");
-      socket.off("adduser")
+      socket.off("adduser");
+      socket.off("fetchusers");
     };
   }, []);
   
