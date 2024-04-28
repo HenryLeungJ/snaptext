@@ -82,7 +82,7 @@ export default function Home() {
       socket.emit("on");
       socket.on("adduser", () => {
           addUser();
-          // socket.emit("fetchall")
+          socket.emit("fetchall")
       })
       socket.on("fetchusers", () => {
           fetchUsers();
