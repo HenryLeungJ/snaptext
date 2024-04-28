@@ -53,18 +53,10 @@ export default function Home() {
     //   await fetchUsers();
     // })
     // socket.emit("on");
-    async function onConnect() {
+    function onConnect() {
       setIsConnected(true);
       setTransport(socket.io.engine.transport.name);
       setMessage([`You connected with ${socket.id}`])
-      socket.on("disconnect", onDisconnect);
-      socket.emit("on");
-      socket.on("adduser", async () => {
-        addUser().then(fetchUsers());
-      })
-      socket.on("fetchusers", () => {
-        fetchUsers();
-      })
       // await fetchUsers();
 
       socket.io.engine.on("upgrade", (transport) => {
@@ -74,6 +66,16 @@ export default function Home() {
 
     socket.on('recieved', (message1) => {
       setMessage((prev) => {console.log(prev); return [...prev, message1]}) //displaying other peoples message sent to the server back to all clients
+    })
+
+    socket.on("disconnect", onDisconnect);
+    socket.emit("on");
+    socket.on("adduser", () => {
+        addUser();
+        socket.emit("fetchall")
+    })
+    socket.on("fetchusers", () => {
+        fetchUsers();
     })
 
     function onDisconnect() {

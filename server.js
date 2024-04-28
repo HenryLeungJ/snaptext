@@ -29,18 +29,20 @@ app.prepare().then(() => {
 
   const io = new Server(httpServer);
 
-  io.on("connection", async (socket) => {
+  io.on("connection", (socket) => {
     // socket.emit("hello", "world");
     
     console.log(socket.id);
-    await socket.on('disconnect', () => {
+    socket.on('disconnect', () => {
       console.log("disconencted")
-      deleteUser(socket);
-      socket.emit("fetchusers")
+      deleteUser(socket).then(io.emit("fetchusers"));
+      
     })
-    await socket.on("on", async () => {
-      await socket.emit("adduser");
-      socket.emit("fetchusers")
+    socket.on("on", () => {
+      socket.emit("adduser");
+    })
+    socket.on("fetchall", () => {
+      io.emit("fetchusers")
     })
     socket.on("submitted", (message, room) => {
         if(room ==='') {
