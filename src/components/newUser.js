@@ -30,7 +30,7 @@ export default function newUser(params) {
                         <div className="flex flex-col justify-center items-center">
                             <div className="jump mb-3 drop-shadow-md">
                                 <Avatar>
-                                    <AvatarImage src={params.img} />
+                                    <AvatarImage src={"/people/"+params.img+".svg"} />
                                     <AvatarFallback>CN</AvatarFallback>
                                 </Avatar>
                             </div>

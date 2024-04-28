@@ -5,12 +5,14 @@ import User from '@/models/user'
 
 
 export async function POST(req) { //req data from body
+    const iconNumber = Math.trunc(Math.random() * 21 + 1)
     const userRequest = await req.json();
     console.log(userRequest.name)
     const con = await dbConnect();
     const newUser = new User({
         userid: userRequest.id,
         username: userRequest.name,
+        icon: iconNumber,
     })
     // console.log(newUser);
     try {

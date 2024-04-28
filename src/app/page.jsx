@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { socket } from "../socket";
 import NewUser from '@/components/newUser'
-import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator'
+// import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator'
+import names from 'human-names';
 
 const users = [{id: 'henry'}, {id: 'hff'}, {id: 'hs'}, {id: 'pen'}, {id: 'leung'},]; //static test data
 
@@ -30,12 +31,13 @@ export default function Home() {
     async function fetchUsers() {
       await fetch("http://localhost:3000/api/getusers")
       .then((response) => response.json())
-      .then((data) => {setAllUsers(data)})
+      .then((data) => {setAllUsers(data); console.log(data)})
     }
 
     // add user
     async function addUser() {
-      const randomName = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] }); // big_red_donkey
+      // const randomName = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] }); // big_red_donkey
+      const randomName = names.allRandom();
       console.log(randomName)
       await fetch("http://localhost:3000/api/newuser", {
         method: 'POST',
@@ -100,7 +102,7 @@ export default function Home() {
     <div className="w-screen h-80 my-10 flex justify-center">
       <div className="w-[80%] grid grid-cols-4 gap-4">
         {allUsers.map((val) => {
-          return <NewUser id={val.id} name={val.username} img="https://picsum.photos/200"/>
+          return <NewUser id={val.userid} name={val.username} img={val.icon}/>
         })}
       </div>
     </div>

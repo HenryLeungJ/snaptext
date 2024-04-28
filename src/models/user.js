@@ -9,7 +9,8 @@ const userSchema = new Schema({
     //     auto: true,
     //   },
     userid: {type: String, required: true, unique: true},
-    username: {type: String, required: true, unique: true}
+    username: {type: String, required: true, unique: true},
+    icon: {type: Number, required: true}
 });
 
 export default mongoose.models.User || model('User', userSchema);
