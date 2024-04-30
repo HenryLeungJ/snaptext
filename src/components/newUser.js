@@ -1,4 +1,6 @@
 
+"use client"
+
 import { Copy } from "lucide-react"
 import {
     Avatar,
@@ -19,18 +21,21 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useState } from "react"
 
 
 export default function newUser(params) {
+
+    const [link, setLink] = useState("")
     return(
         <Dialog>
-        <div className="max-h-2 my-10">
+        <div className="max-h-2 my-10 h-2">
             <DialogTrigger asChild>
                         <div className="flex flex-col justify-center items-center">
                             <div className="jump mb-3 drop-shadow-md">
                                 <Avatar>
                                     <AvatarImage src={"/people/"+params.img+".svg"} />
-                                    <AvatarFallback>CN</AvatarFallback>
+                                    <AvatarFallback>Icon</AvatarFallback>
                                 </Avatar>
                             </div>
                             {params.highlight ? <p className="drop-shadow-md font-sans font-extrabold">{params.name}</p> : <p className="drop-shadow-md font-sans">{params.name}</p>}
@@ -53,7 +58,11 @@ export default function newUser(params) {
                     <Input
                     id="link"
                     defaultValue="https://ui.shadcn.com/docs/installation"
-                    readOnly
+                    onChange={(e) => {
+                        setLink(e.target.value);
+                        console.log(link);
+                    }}
+                    value={link}
                     />
                 </div>
                 <Button type="submit" size="sm" className="px-3">
@@ -63,7 +72,13 @@ export default function newUser(params) {
                 </div>
                 <DialogFooter className="sm:justify-start">
                 <DialogClose asChild>
-                    <Button>
+                    <Button onClick={() => {
+                        if (link != "")
+                        {
+                            params.onClick(link, params.id)
+                        }
+                        }}>
+
                     Send
                     </Button>
                 </DialogClose>

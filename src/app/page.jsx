@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { socket } from "../socket";
-import NewUser from '@/components/newUser'
+import NewUser from '@/components/newUser';
+import Alert from '@/components/alert'
 // import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator'
 import names from 'human-names';
 
@@ -12,13 +13,20 @@ export default function Home() {
   const [isConnected, setIsConnected] = useState(false);
   const [transport, setTransport] = useState("N/A");
   const [allUsers, setAllUsers] = useState([])
+  const [recievedMessage, setRecievedMessage] = useState("") //message they recieved
+  const [recievedUsers, setRecievedUsers] = useState([]) //people who sent the user a message
 
-  //message
-  const [message, setMessage] = useState([]);
-  const [input, setInput] = useState("")
+  // //message
+  // const [message, setMessage] = useState([]);
+  // const [input, setInput] = useState("")
 
-  //Room
-  const [room, setRoom] = useState("")
+  // //Room
+  // const [room, setRoom] = useState("")
+
+  function sendMessage(message, toUserId) {
+    socket.emit("message-sent", message, toUserId, socket.id);
+    // console.log("sent message", message, toUserId)
+  }
 
   useEffect(() => {
     if (socket.connected) {
@@ -28,74 +36,36 @@ export default function Home() {
     //   setMessage(value);
     // });
 
-    async function deleteUser() {
-      await fetch("http://localhost:3000/api/deleteuser", {
-        method: 'DELETE',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({id: socket.id})
-      }).then(response => response.json()).then((data) => {console.log(("deleted: " + data.userid) || data.error)})
-    } 
-
     async function fetchUsers() {
       await fetch("http://localhost:3000/api/getusers")
       .then((response) => response.json())
       .then((data) => {setAllUsers(data); console.log(data)})
     }
-
-    async function deleteUser() {
-      await fetch("http://localhost:3000/api/deleteuser", {
-        method: 'DELETE',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({id: socket.id})
-      }).then(response => response.json()).then((data) => {console.log(("deleted: " + data.userid) || data.error)})
-    } 
-
-    // add user
-    async function addUser() {
-      // const randomName = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] }); // big_red_donkey
-      const randomName = names.allRandom();
-      console.log(randomName)
-      await fetch("http://localhost:3000/api/newuser", {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({id: socket.id, name: randomName})
-      })
-    }
-
-    // socket.on("adduser", async () => {
-    //   await addUser();
-    //   await fetchUsers();
-    // })
-    // socket.emit("on");
     function onConnect() {
       setIsConnected(true);
       setTransport(socket.io.engine.transport.name);
-      setMessage([`You connected with ${socket.id}`])
+      // setMessage([`You connected with ${socket.id}`])
       // await fetchUsers();
 
-      socket.emit("on");
-      socket.on("adduser", () => {
-          addUser();
-          socket.emit("fetchall")
-      })
+      socket.emit("newuser");
       socket.on("fetchusers", () => {
           fetchUsers();
+      })
+      socket.on("message-from-user", (message, fromUserId) => {
+        setRecievedMessage(message);
+        setRecievedUsers((prev) => {return[...prev, fromUserId]}) //replaces new user who sent message with icon
+        console.log(fromUserId)
       })
 
       socket.io.engine.on("upgrade", (transport) => {
         setTransport(transport.name);
       });
+
     }
 
-    socket.on('recieved', (message1) => {
-      setMessage((prev) => {console.log(prev); return [...prev, message1]}) //displaying other peoples message sent to the server back to all clients
-    })
+    // socket.on('recieved', (message1) => {
+    //   setMessage((prev) => {console.log(prev); return [...prev, message1]}) //displaying other peoples message sent to the server back to all clients
+    // })
 
     socket.on("disconnect", onDisconnect);
 
@@ -110,9 +80,10 @@ export default function Home() {
     return () => {
       socket.off("disconnect", onDisconnect);
       socket.off("connect", onConnect);
-      socket.off("recieved");
+      // socket.off("recieved");
       socket.off("adduser");
       socket.off("fetchusers");
+      socket.off("message-from-user")
     };
   }, []);
   
@@ -124,14 +95,18 @@ export default function Home() {
 
   return (
     <div className="w-screen h-80 my-10 flex justify-center">
-      <div className="w-[80%] grid grid-cols-4 gap-4">
-        {allUsers.map((val) => {
-          if (socket.id == val.userid) {
-            return <NewUser id={val.userid} name={val.username} img={val.icon} highlight={true}/>
-          }
-          return <NewUser id={val.userid} name={val.username} img={val.icon}/>
-        })}
-      </div>
+  
+        <div className="w-[80%] grid grid-cols-4 gap-4">
+          {allUsers.map((val) => {
+            if (socket.id == val.userid) {
+              return <NewUser key={val.userid} id={val.userid} name={val.username} img={val.icon} highlight={true} onClick={sendMessage}/>
+            }
+            else if (recievedUsers.includes(val.userid)) {
+              return <div className="w-[80%] flex justify-center items-end h-full"><Alert/></div>
+            }
+            return <NewUser key={val.userid} id={val.userid} name={val.username} img={val.icon} onClick={sendMessage}/>
+          })}
+        </div>
     </div>
   );
 }

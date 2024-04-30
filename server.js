@@ -2,6 +2,7 @@ import { createServer } from "node:http";
 import next from "next";
 import { Server } from "socket.io";
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator'
+import names from 'human-names';
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
@@ -21,6 +22,19 @@ async function deleteUser(socket) {
   }).then(response => response.json()).then((data) => {console.log(("deleted: " + data.userid) || data.error)})
 } 
 
+async function addUser(socket) {
+  // const randomName = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] }); // big_red_donkey
+  const randomName = names.allRandom();
+  console.log(randomName)
+  await fetch("http://localhost:3000/api/newuser", {
+    method: 'POST',
+    headers: {
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify({id: socket.id, name: randomName})
+  })
+}
+
 
 
 app.prepare().then(() => {
@@ -36,30 +50,29 @@ app.prepare().then(() => {
     socket.on('disconnect', () => {
       console.log("disconencted")
       deleteUser(socket).then(() => {io.emit("fetchusers")});
-      // setTimeout(() => {
-      //   io.emit("fetchusers")
-      // }, 1000)
+
     })
-    socket.on("on", () => {
-      socket.emit("adduser");
-      // setTimeout(() => {
-      //   io.emit("fetchusers")
-      // }, 1000)
-      // io.emit("fetchusers")
+    socket.on("newuser", () => {
+      addUser(socket).then(() => {io.emit("fetchusers")});
+      console.log("done")
       
     })
     socket.on("fetchall", () => {
       io.emit("fetchusers")
     })
-    socket.on("submitted", (message, room) => {
-        if(room ==='') {
-            socket.broadcast.emit('recieved', message);
-        } else {
-            socket.to(room).emit('recieved', message);
-        }
+
+    socket.on("message-sent", (message, toUserId, id) => {
+      socket.to(toUserId).emit('message-from-user', message, id)
+    }) //recieved message from user then send message to specified user
+    // socket.on("submitted", (message, room) => {
+    //     if(room ==='') {
+    //         socket.broadcast.emit('recieved', message);
+    //     } else {
+    //         socket.to(room).emit('recieved', message);
+    //     }
         
-        console.log(message)
-      }) //sending the message from the clientside to everyone
+    //     console.log(message)
+    //   }) //sending the message from the clientside to everyone
   });
 
   httpServer
