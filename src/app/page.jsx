@@ -10,11 +10,11 @@ import names from 'human-names';
 const users = [{id: 'henry'}, {id: 'hff'}, {id: 'hs'}, {id: 'pen'}, {id: 'leung'},]; //static test data
 
 export default function Home() {
-  const [isConnected, setIsConnected] = useState(false);
-  const [transport, setTransport] = useState("N/A");
+  // const [isConnected, setIsConnected] = useState(false);
+  // const [transport, setTransport] = useState("N/A");
   const [allUsers, setAllUsers] = useState([])
-  const [recievedMessage, setRecievedMessage] = useState("") //try to see how to convert the recieved users into an array of sets and loop over it to find value
-  const [recievedUsers, setRecievedUsers] = useState([]) //people who sent the user a message
+  const [recievedMessage, setRecievedMessage] = useState() //try to see how to convert the recieved users into an array of sets and loop over it to find value
+  const [recievedUsers, setRecievedUsers] = useState({}) //people who sent the user a message
 
   // //message
   // const [message, setMessage] = useState([]);
@@ -24,6 +24,9 @@ export default function Home() {
   // const [room, setRoom] = useState("")
 
   function sendMessage(message, toUserId) {
+    if(toUserId in recievedUsers){
+      return(console.log(wait)) //change this in the future to be an alert
+    }
     socket.emit("message-sent", message, toUserId, socket.id);
     // console.log("sent message", message, toUserId)
   }
@@ -42,8 +45,8 @@ export default function Home() {
       .then((data) => {setAllUsers(data); console.log(data)})
     }
     function onConnect() {
-      setIsConnected(true);
-      setTransport(socket.io.engine.transport.name);
+      // setIsConnected(true);
+      // setTransport(socket.io.engine.transport.name);
       // setMessage([`You connected with ${socket.id}`])
       // await fetchUsers();
 
@@ -52,13 +55,12 @@ export default function Home() {
       })
       socket.on("message-from-user", (message, fromUserId) => {
         setRecievedMessage(message);
-        setRecievedUsers((prev) => {return[...prev, fromUserId]}) //replaces new user who sent message with icon
-        console.log(fromUserId)
+        setRecievedUsers((prev) => {return {...prev, [fromUserId]: message}}) //replaces new user who sent message with icon
       })
 
-      socket.io.engine.on("upgrade", (transport) => {
-        setTransport(transport.name);
-      });
+      // socket.io.engine.on("upgrade", (transport) => {
+      //   setTransport(transport.name);
+      // });
 
     }
 
@@ -69,15 +71,15 @@ export default function Home() {
     socket.on("disconnect", onDisconnect);
 
     function onDisconnect() {
-      setIsConnected(false);
-      setTransport("N/A");
+      // setIsConnected(false);
+      // setTransport("N/A");
       console.log('disconnected');
     }
     socket.on("connect", onConnect);
 
 
     return () => {
-      socket.emit("newuser");
+      socket.emit("newuser"); //adding new user
       socket.off("disconnect", onDisconnect);
       socket.off("connect", onConnect);
       // socket.off("recieved");
@@ -101,8 +103,8 @@ export default function Home() {
             if (socket.id == val.userid) {
               return <NewUser key={val.userid} id={val.userid} name={val.username} img={val.icon} highlight={true} onClick={sendMessage}/>
             }
-            else if (recievedUsers.includes(val.userid)) {
-              return <Alert/>
+            else if (val.userid in recievedUsers) {
+              return <Alert key={val.userid}/>
             }
             return <NewUser key={val.userid} id={val.userid} name={val.username} img={val.icon} onClick={sendMessage}/>
           })}
