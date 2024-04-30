@@ -13,7 +13,7 @@ export default function Home() {
   const [isConnected, setIsConnected] = useState(false);
   const [transport, setTransport] = useState("N/A");
   const [allUsers, setAllUsers] = useState([])
-  const [recievedMessage, setRecievedMessage] = useState("") //message they recieved
+  const [recievedMessage, setRecievedMessage] = useState("") //try to see how to convert the recieved users into an array of sets and loop over it to find value
   const [recievedUsers, setRecievedUsers] = useState([]) //people who sent the user a message
 
   // //message
