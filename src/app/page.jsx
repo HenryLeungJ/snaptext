@@ -47,7 +47,6 @@ export default function Home() {
       // setMessage([`You connected with ${socket.id}`])
       // await fetchUsers();
 
-      socket.emit("newuser");
       socket.on("fetchusers", () => {
           fetchUsers();
       })
@@ -78,6 +77,7 @@ export default function Home() {
 
 
     return () => {
+      socket.emit("newuser");
       socket.off("disconnect", onDisconnect);
       socket.off("connect", onConnect);
       // socket.off("recieved");

@@ -49,7 +49,7 @@ app.prepare().then(() => {
     console.log(socket.id);
     socket.on('disconnect', () => {
       console.log("disconencted")
-      deleteUser(socket).then(() => {io.emit("fetchusers")});
+      deleteUser(socket)
 
     })
     socket.on("newuser", () => {
@@ -57,9 +57,9 @@ app.prepare().then(() => {
       console.log("done")
       
     })
-    socket.on("fetchall", () => {
-      io.emit("fetchusers")
-    })
+    // socket.on("fetchall", () => {
+    //   io.emit("fetchusers")
+    // })
 
     socket.on("message-sent", (message, toUserId, id) => {
       socket.to(toUserId).emit('message-from-user', message, id)
