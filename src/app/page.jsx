@@ -99,7 +99,7 @@ export default function Home() {
               return <NewUser key={val.userid} id={val.userid} name={val.username} img={val.icon} highlight={true} onClick={sendMessage}/>
             }
             else if (val.userid in recievedUsers) {
-              return <Alert key={val.userid} message={recievedUsers[val.userid]} close={() => {delete recievedUsers[val.userid]; console.log(recievedUsers)}}/>
+              return <Alert key={val.userid} message={recievedUsers[val.userid]} close={() => {delete recievedUsers[val.userid]; console.log(recievedUsers)}}/> //fix this
             }
             return <NewUser key={val.userid} id={val.userid} name={val.username} img={val.icon} onClick={sendMessage}/>
           })}
