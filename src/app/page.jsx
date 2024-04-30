@@ -13,7 +13,6 @@ export default function Home() {
   // const [isConnected, setIsConnected] = useState(false);
   // const [transport, setTransport] = useState("N/A");
   const [allUsers, setAllUsers] = useState([])
-  const [recievedMessage, setRecievedMessage] = useState() //try to see how to convert the recieved users into an array of sets and loop over it to find value
   const [recievedUsers, setRecievedUsers] = useState({}) //people who sent the user a message
 
   // //message
@@ -24,9 +23,6 @@ export default function Home() {
   // const [room, setRoom] = useState("")
 
   function sendMessage(message, toUserId) {
-    if(toUserId in recievedUsers){
-      return(console.log(wait)) //change this in the future to be an alert
-    }
     socket.emit("message-sent", message, toUserId, socket.id);
     // console.log("sent message", message, toUserId)
   }
@@ -54,7 +50,6 @@ export default function Home() {
           fetchUsers();
       })
       socket.on("message-from-user", (message, fromUserId) => {
-        setRecievedMessage(message);
         setRecievedUsers((prev) => {return {...prev, [fromUserId]: message}}) //replaces new user who sent message with icon
       })
 
@@ -104,7 +99,7 @@ export default function Home() {
               return <NewUser key={val.userid} id={val.userid} name={val.username} img={val.icon} highlight={true} onClick={sendMessage}/>
             }
             else if (val.userid in recievedUsers) {
-              return <Alert key={val.userid}/>
+              return <Alert key={val.userid} message={recievedUsers[val.userid]} close={() => {delete recievedUsers[val.userid]; console.log(recievedUsers)}}/>
             }
             return <NewUser key={val.userid} id={val.userid} name={val.username} img={val.icon} onClick={sendMessage}/>
           })}

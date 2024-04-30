@@ -1,3 +1,4 @@
+"use client"
 import { Copy } from "lucide-react"
  
 import { Button } from "@/components/ui/button"
@@ -20,7 +21,9 @@ import {
 } from "@/components/ui/avatar"
 import Image from "next/image"
  
-export default function DialogCloseButton() {
+export default function DialogCloseButton(params) {
+
+
   return (
     <Dialog>
     <div className="max-h-2 my-11 h-2">
@@ -49,18 +52,19 @@ export default function DialogCloseButton() {
             </Label>
             <Input
               id="link"
-              defaultValue="https://ui.shadcn.com/docs/installation"
+              defaultValue={params.message}
+              value={params.message}
               readOnly
             />
           </div>
-          <Button type="submit" size="sm" className="px-3">
+          <Button type="submit" size="sm" className="px-3" onClick={async()=>{await navigator.clipboard.writeText(params.message)}}>
             <span className="sr-only">Copy</span>
             <Copy className="h-4 w-4" />
           </Button>
         </div>
         <DialogFooter className="sm:justify-start">
           <DialogClose asChild>
-            <Button type="button" variant="secondary">
+            <Button type="button" variant="secondary" onClick={() => {params.close()}}>
               Close
             </Button>
           </DialogClose>
