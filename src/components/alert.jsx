@@ -23,6 +23,7 @@ import Image from "next/image"
 export default function DialogCloseButton() {
   return (
     <Dialog>
+    <div className="max-h-2 my-11 h-2">
       <DialogTrigger asChild>
         <div className="flex flex-col justify-center items-center">
             <div className="jump mb-3 drop-shadow-md">
@@ -33,6 +34,7 @@ export default function DialogCloseButton() {
             </div>
         </div>
       </DialogTrigger>
+      </div>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Share link</DialogTitle>

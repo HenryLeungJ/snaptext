@@ -102,7 +102,7 @@ export default function Home() {
               return <NewUser key={val.userid} id={val.userid} name={val.username} img={val.icon} highlight={true} onClick={sendMessage}/>
             }
             else if (recievedUsers.includes(val.userid)) {
-              return <div className="w-[80%] flex justify-center items-end h-full"><Alert/></div>
+              return <Alert/>
             }
             return <NewUser key={val.userid} id={val.userid} name={val.username} img={val.icon} onClick={sendMessage}/>
           })}
