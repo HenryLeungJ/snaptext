@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { socket } from "../socket";
 import NewUser from '@/components/newUser';
 import Alert from '@/components/alert'
-import names from 'human-names';
 
 const users = [{id: 'henry'}, {id: 'hff'}, {id: 'hs'}, {id: 'pen'}, {id: 'leung'},]; //static test data
 
@@ -63,7 +62,7 @@ export default function Home() {
               return <NewUser key={val.userid} id={val.userid} name={val.username} img={val.icon} highlight={true} onClick={sendMessage}/>
             }
             else if (val.userid in recievedUsers) {
-              return <Alert key={val.userid} message={recievedUsers[val.userid]} close={() => {delete recievedUsers[val.userid]; console.log(recievedUsers); setAllUsers((prev) => [...prev])}}/> //trigger rerender
+              return <Alert key={val.userid} sentFrom={val.username} message={recievedUsers[val.userid]} close={() => {delete recievedUsers[val.userid]; console.log(recievedUsers); setAllUsers((prev) => [...prev])}}/> //trigger rerender
             }
             return <NewUser key={val.userid} id={val.userid} name={val.username} img={val.icon} onClick={sendMessage}/>
           })}

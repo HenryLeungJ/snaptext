@@ -26,15 +26,16 @@ export default function DialogCloseButton(params) {
 
   return (
     <Dialog>
-    <div className="max-h-2 my-11 h-2">
+    <div className="max-h-2 my-10 h-2">
       <DialogTrigger asChild>
         <div className="flex flex-col justify-center items-center">
-            <div className="jump mb-3 drop-shadow-md">
+            <div className="wiggle mb-3 drop-shadow-md">
                 <Avatar>
                     <Image src="/mail.svg" width={100} height={100} alt="icon"/>
                     <AvatarFallback>Mail</AvatarFallback>
                 </Avatar>
             </div>
+            <p className="drop-shadow-md text-green-500 font-sans">{params.sentFrom}</p>
         </div>
       </DialogTrigger>
       </div>
@@ -42,7 +43,7 @@ export default function DialogCloseButton(params) {
         <DialogHeader>
           <DialogTitle>Share link</DialogTitle>
           <DialogDescription>
-            Anyone who has this link will be able to view this.
+            {params.sentFrom} sent you this link!
           </DialogDescription>
         </DialogHeader>
         <div className="flex items-center space-x-2">

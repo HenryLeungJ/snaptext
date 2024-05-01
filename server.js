@@ -1,7 +1,6 @@
 import { createServer } from "node:http";
 import next from "next";
 import { Server } from "socket.io";
-import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator'
 import names from 'human-names';
 
 const dev = process.env.NODE_ENV !== "production";
@@ -44,7 +43,6 @@ app.prepare().then(() => {
   const io = new Server(httpServer);
 
   io.on("connection", (socket) => {
-    // socket.emit("hello", "world");
     
     console.log(socket.id);
     socket.on('disconnect', () => {
@@ -57,22 +55,10 @@ app.prepare().then(() => {
       console.log("done")
       
     })
-    // socket.on("fetchall", () => {
-    //   io.emit("fetchusers")
-    // })
 
     socket.on("message-sent", (message, toUserId, id) => {
       socket.to(toUserId).emit('message-from-user', message, id)
     }) //recieved message from user then send message to specified user
-    // socket.on("submitted", (message, room) => {
-    //     if(room ==='') {
-    //         socket.broadcast.emit('recieved', message);
-    //     } else {
-    //         socket.to(room).emit('recieved', message);
-    //     }
-        
-    //     console.log(message)
-    //   }) //sending the message from the clientside to everyone
   });
 
   httpServer
