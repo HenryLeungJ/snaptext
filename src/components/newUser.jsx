@@ -24,7 +24,7 @@ import { Label } from "@/components/ui/label"
 import { useState } from "react"
 
 
-export default function newUser(params) {
+export default function NewUser(params) {
 
     const [link, setLink] = useState("")
     return(
