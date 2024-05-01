@@ -65,10 +65,6 @@ export default function newUser(params) {
                     value={link}
                     />
                 </div>
-                <Button type="submit" size="sm" className="px-3">
-                    <span className="sr-only">Copy</span>
-                    <Copy className="h-4 w-4" />
-                </Button>
                 </div>
                 <DialogFooter className="sm:justify-start">
                 <DialogClose asChild>

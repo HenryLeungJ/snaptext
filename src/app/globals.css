@@ -7,7 +7,7 @@
     text-align:center;
     opacity: 1;
     color:#fff;
-    animation: bounce .3s infinite alternate;
+    animation: bounce .5s infinite alternate;
   }
   
   @keyframes bounce {
