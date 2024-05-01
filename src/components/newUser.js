@@ -42,7 +42,7 @@ export default function newUser(params) {
                         </div>
             </DialogTrigger>
         </div>
-            
+            {!params.highlight &&
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                 <DialogTitle>Share link</DialogTitle>
@@ -79,7 +79,7 @@ export default function newUser(params) {
                     </Button>
                 </DialogClose>
                 </DialogFooter>
-            </DialogContent>
+            </DialogContent>}
         </Dialog>
     )
 }

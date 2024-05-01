@@ -5,8 +5,6 @@ import { socket } from "../socket";
 import NewUser from '@/components/newUser';
 import Alert from '@/components/alert'
 
-const users = [{id: 'henry'}, {id: 'hff'}, {id: 'hs'}, {id: 'pen'}, {id: 'leung'},]; //static test data
-
 export default function Home() {
   const [allUsers, setAllUsers] = useState([])
   const [recievedUsers, setRecievedUsers] = useState({}) //people who sent the user a message
