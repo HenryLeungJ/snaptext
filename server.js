@@ -12,7 +12,7 @@ const handler = app.getRequestHandler();
 
 //delete user
 async function deleteUser(socket) {
-  await fetch("http://localhost:3000/api/deleteuser", {
+  await fetch("https://snaptextquick.vercel.app/api/deleteuser", {
     method: 'DELETE',
     headers: {
       'Content-type': 'application/json',
@@ -25,7 +25,7 @@ async function addUser(socket) {
   // const randomName = uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] }); // big_red_donkey
   const randomName = names.allRandom();
   console.log(randomName)
-  await fetch("http://localhost:3000/api/newuser", {
+  await fetch("https://snaptextquick.vercel.app/api/newuser", {
     method: 'POST',
     headers: {
       'Content-type': 'application/json',

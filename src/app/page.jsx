@@ -19,7 +19,7 @@ export default function Home() {
     }
 
     async function fetchUsers() {
-      await fetch("http://localhost:3000/api/getusers")
+      await fetch("https://snaptextquick.vercel.app/api/getusers")
       .then((response) => response.json())
       .then((data) => {setAllUsers(data); console.log(data)})
     }
