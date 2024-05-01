@@ -1,5 +1,7 @@
 "use client"
 import { Copy } from "lucide-react"
+import { toast } from "sonner"
+
  
 import { Button } from "@/components/ui/button"
 import {
@@ -23,10 +25,9 @@ import Image from "next/image"
  
 export default function DialogCloseButton(params) {
 
-
   return (
     <Dialog>
-    <div className="max-h-2 my-10 h-2">
+    <div className="max-h-2 my-10 h-2" onLoad={() => {toast(`${params.sentFrom} sent you a message!`, params.sentFrom)}}>
       <DialogTrigger asChild>
         <div className="flex flex-col justify-center items-center">
             <div className="wiggle mb-3 drop-shadow-md">
@@ -66,7 +67,7 @@ export default function DialogCloseButton(params) {
         <DialogFooter className="sm:justify-start">
           <DialogClose asChild>
             <Button type="button" variant="secondary" onClick={() => {params.close()}}>
-              Close
+              Reset
             </Button>
           </DialogClose>
         </DialogFooter>

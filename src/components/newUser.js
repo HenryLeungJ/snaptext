@@ -82,11 +82,6 @@ export default function newUser(params) {
                     Send
                     </Button>
                 </DialogClose>
-                <DialogClose asChild>
-                    <Button type="button" variant="secondary">
-                    Close
-                    </Button>
-                </DialogClose>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
