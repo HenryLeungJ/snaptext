@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className + " h-screen"}>
         <Header/>
-        <main>{children}</main>
+        {children}
         <Toaster />
       </body>
     </html>

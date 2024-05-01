@@ -37,6 +37,7 @@ export default function Home() {
 
 
     return () => {
+      fetchUsers()
       socket.emit("newuser"); //adding new user
       socket.off("connect", onConnect);
       socket.off("adduser");
