@@ -40,7 +40,11 @@ app.prepare().then(() => {
 
   const httpServer = createServer(handler);
 
-  const io = new Server(httpServer);
+  const io = new Server(httpServer, {
+    cors: {
+      origin: "*"
+    }
+  });
 
   io.on("connection", (socket) => {
     
