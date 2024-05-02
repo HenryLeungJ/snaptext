@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { socket } from "../socket";
 import NewUser from '@/components/newUser';
 import Alert from '@/components/alert'
+import { unstable_noStore as noStore } from "next/cache";
 
 export default function Home() {
+  noStore();
   const [allUsers, setAllUsers] = useState([])
   const [recievedUsers, setRecievedUsers] = useState({}) //people who sent the user a message
 
@@ -14,15 +16,17 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if (socket.connected) {
+      if (socket.connected) {
       onConnect();
     }
-
     async function fetchUsers() {
-      await fetch("https://snaptextquick.vercel.app/api/getusers")
+      await fetch("http://localhost:3000/api/getusers", { cache: 'no-store', headers: {
+        'Content-type': 'application/json',
+      }, method: 'GET' })
       .then((response) => response.json())
-      .then((data) => {setAllUsers(data); console.log(data)})
+      .then((data) => {setAllUsers(data); console.log(data)});
     }
+
     function onConnect() {
 
       socket.on("fetchusers", () => {
@@ -34,16 +38,16 @@ export default function Home() {
 
     }
     socket.on("connect", onConnect);
-
-
-    return () => {
-      fetchUsers()
-      socket.emit("newuser"); //adding new user
-      socket.off("connect", onConnect);
-      socket.off("adduser");
-      socket.off("fetchusers");
-      socket.off("message-from-user")
-    };
+    socket.emit("newuser");
+    
+    // return () => {
+    //   fetchUsers()
+    //   socket.emit("newuser"); //adding new user
+    //   socket.off("connect", onConnect);
+    //   socket.off("adduser");
+    //   socket.off("fetchusers");
+    //   socket.off("message-from-user")
+    // };
   }, []);
   
 
@@ -70,3 +74,4 @@ export default function Home() {
   );
 }
 
+export const dynamic = "force-dynamic"
