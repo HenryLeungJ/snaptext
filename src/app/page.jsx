@@ -4,10 +4,8 @@ import { useEffect, useState } from "react";
 import { socket } from "../socket";
 import NewUser from '@/components/newUser';
 import Alert from '@/components/alert'
-import { unstable_noStore as noStore } from "next/cache";
 
 export default function Home() {
-  noStore();
   const [allUsers, setAllUsers] = useState([])
   const [recievedUsers, setRecievedUsers] = useState({}) //people who sent the user a message
 
