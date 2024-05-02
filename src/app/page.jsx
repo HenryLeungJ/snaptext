@@ -20,7 +20,7 @@ export default function Home() {
       onConnect();
     }
     async function fetchUsers() {
-      await fetch("http://localhost:3000/api/getusers", { cache: 'no-store', headers: {
+      await fetch("https://snaptextquick.vercel.app/api/getusers", { cache: 'no-store', headers: {
         'Content-type': 'application/json',
       }, method: 'GET' })
       .then((response) => response.json())
