@@ -45,15 +45,15 @@ export default function NewUser(params) {
             {!params.highlight &&
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                <DialogTitle>Share link</DialogTitle>
+                <DialogTitle>{params.name}</DialogTitle>
                 <DialogDescription>
-                    Share a link!
+                    Snap A Message To {params.name}
                 </DialogDescription>
                 </DialogHeader>
                 <div className="flex items-center space-x-2">
                 <div className="grid flex-1 gap-2">
                     <Label htmlFor="link" className="sr-only">
-                    Link
+                    Message
                     </Label>
                     <Input
                     id="link"
