@@ -12,7 +12,7 @@ const handler = app.getRequestHandler();
 
 //delete user
 async function deleteUser(socket) {
-  await fetch("https://snaptextquick.vercel.app/api/deleteuser", {
+  await fetch("http://localhost:3000/api/deleteuser", {
     method: 'DELETE',
     headers: {
       'Content-type': 'application/json',
