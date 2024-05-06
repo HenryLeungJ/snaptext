@@ -56,15 +56,6 @@ export default function Home() {
 
   return (
     <div className="w-screen h-80 my-10 flex justify-center">
-    {allUsers.length == 0 ? <div className="h-full w-full flex justify-center flex-col items-center"><p className="font-bold text-2xl w-52 md:w-auto text-center">Please wait for the server to start up!</p>
-    <div class="🤚">
-      <div class="👉"></div>
-      <div class="👉"></div>
-      <div class="👉"></div>
-      <div class="👉"></div>
-      <div class="🌴"></div>		
-      <div class="👍"></div>
-    </div></div> :
         <div className="w-[80%] grid grid-cols-4 gap-4">
           {allUsers.map((val) => {
             if (socket.id == val.userid) {
@@ -75,7 +66,7 @@ export default function Home() {
             }
             return <NewUser key={val.userid} id={val.userid} name={val.username} img={val.icon} onClick={sendMessage}/>
           })}
-        </div> }
+        </div>
     </div>
   );
 }
