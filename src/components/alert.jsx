@@ -42,15 +42,15 @@ export default function DialogCloseButton(params) {
       </div>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Share link</DialogTitle>
+          <DialogTitle>{params.sentFrom}</DialogTitle>
           <DialogDescription>
-            {params.sentFrom} sent you this link!
+            {params.sentFrom} snapped this message to you!
           </DialogDescription>
         </DialogHeader>
         <div className="flex items-center space-x-2">
           <div className="grid flex-1 gap-2">
             <Label htmlFor="link" className="sr-only">
-              Link
+              Message
             </Label>
             <Input
               id="link"
